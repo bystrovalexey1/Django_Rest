@@ -149,7 +149,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "mailing.log",
+            "filename": "lesson.log",
             "formatter": "simple",
         },
     },

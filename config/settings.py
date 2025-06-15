@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "users",
+    "materials",
 ]
 
 MIDDLEWARE = [
@@ -149,7 +150,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "mailing.log",
+            "filename": "lesson.log",
             "formatter": "simple",
         },
     },

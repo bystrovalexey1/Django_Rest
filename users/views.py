@@ -1,14 +1,18 @@
 import os
 import secrets
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, generics
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import CreateView
 from dotenv import load_dotenv
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from .forms import CustomUserCreationForm
-from .models import CustomUser
+from .models import CustomUser, Payments
+from .serializers import PaymentsSerializer
 
 load_dotenv(override=True)
 
@@ -42,3 +46,11 @@ def email_verification(request, token):
     user.is_active = True
     user.save()
     return redirect(reverse("users:login"))
+
+
+class PaymentsListAPIView(generics.ListAPIView):
+    serializer_class = PaymentsSerializer
+    queryset = Payments.objects.all()
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['pay_course', 'pay_lesson']
+    ordering_fields = ['pay_date']

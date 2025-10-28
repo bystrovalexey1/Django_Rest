@@ -7,6 +7,7 @@ from users.models import CustomUser, Payments
 class UsersAdmin(admin.ModelAdmin):
     exclude = ("password",)
 
+
 @admin.register(Payments)
 class UsersAdmin(admin.ModelAdmin):
     list_display = (

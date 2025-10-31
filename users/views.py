@@ -39,19 +39,19 @@ class FollowUpdateAPIView(UpdateAPIView):
 
     def post(self, *args, **kwargs):
         user = self.request.user
-        course_id = self.request.data.get('courses')
+        course_id = self.request.data.get("courses")
         course_item = get_object_or_404(Course, pk=course_id)
         subs_item = Follow.objects.filter(user=user, courses=course_item)
 
         # Если подписка у пользователя на этот курс есть - удаляем ее
         if subs_item.exists():
             subs_item.delete()
-            message = f'подписка на курс {course_item} удалена'
+            message = f"подписка на курс {course_item} удалена"
             send_sub_information.delay(message, user.email)
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             sub = Follow.objects.create(user=user, courses=course_item)
-            message = f'подписка на курс {course_item} добавлена'
+            message = f"подписка на курс {course_item} добавлена"
             sub.save()
             send_sub_information.delay(message, user.email)
         # Возвращаем ответ в API

@@ -65,27 +65,17 @@ class LessonTestCase(APITestCase):
 
     def test_lesson_update(self):
         url = reverse("materials:lesson_update", args=(self.lesson.pk,))
-        data = {
-            "name": "DRF"
-        }
+        data = {"name": "DRF"}
         response = self.client.patch(url, data)
         data = response.json()
-        self.assertEqual(
-            response.status_code, status.HTTP_200_OK
-        )
-        self.assertEqual(
-            data.get("name"), "DRF"
-        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(data.get("name"), "DRF")
 
     def test_lesson_delete(self):
         url = reverse("materials:lesson_delete", args=(self.lesson.pk,))
         response = self.client.delete(url)
-        self.assertEqual(
-            response.status_code, status.HTTP_204_NO_CONTENT
-        )
-        self.assertEqual(
-            Lesson.objects.all().count(), 0
-        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Lesson.objects.all().count(), 0)
 
     def test_lesson_list(self):
         url = reverse("materials:lesson_list")
@@ -103,17 +93,20 @@ class LessonTestCase(APITestCase):
                     "preview": None,
                     "description": self.lesson.description,
                     "course": self.course.pk,
-                    "owner": self.user.pk
+                    "owner": self.user.pk,
                 },
-            ]
+            ],
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data, result)
 
+
 class FollowTestCase(APITestCase):
     def setUp(self):
         self.user = CustomUser.objects.create(email="bystrovalexey@sky.pro")
-        self.course = Course.objects.create(name="Подписка", description="Тест подписки", owner=self.user)
+        self.course = Course.objects.create(
+            name="Подписка", description="Тест подписки", owner=self.user
+        )
         self.client.force_authenticate(user=self.user)
 
     def test_subscribe(self):
@@ -122,7 +115,9 @@ class FollowTestCase(APITestCase):
         response = self.client.post(url, data)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(data, {"message": f'подписка на курс {self.course.title} добавлена'})
+        self.assertEqual(
+            data, {"message": f"подписка на курс {self.course.title} добавлена"}
+        )
 
     def test_unsubscribe(self):
         url = reverse("users:follow-check")
@@ -131,4 +126,6 @@ class FollowTestCase(APITestCase):
         response = self.client.post(url, data)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(data, {'message': f'подписка на курс {self.course.title} удалена'})
+        self.assertEqual(
+            data, {"message": f"подписка на курс {self.course.title} удалена"}
+        )

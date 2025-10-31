@@ -46,13 +46,31 @@ class Payments(models.Model):
         null=True,
         blank=True,
     )
-    payment_amount = models.IntegerField(verbose_name='сумма оплаты')
+    payment_amount = models.IntegerField(verbose_name="сумма оплаты")
     PAYMENT_METHOD_CHOICES = [
         ("наличные", "Наличные"),
         ("перевод на счет", "Перевод на счет"),
     ]
-    payment_method = models.CharField(max_length=15, choices=PAYMENT_METHOD_CHOICES, default="наличные")
+    payment_method = models.CharField(
+        max_length=15, choices=PAYMENT_METHOD_CHOICES, default="наличные"
+    )
 
     def __str__(self):
-        return f'{self.user} - {self.pay_date}'
+        return f"{self.user} - {self.pay_date}"
 
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+    )
+    courses = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="курс",
+    )
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"

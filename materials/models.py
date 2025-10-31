@@ -7,6 +7,12 @@ class Course(models.Model):
     name = models.CharField(max_length=50, verbose_name="Название курса")
     preview = models.ImageField(upload_to="course/", blank=True, null=True)
     description = models.TextField(null=True, blank=True, verbose_name="Описание курса")
+    video_url = models.CharField(
+        max_length=300,
+        verbose_name="Ссылка на видео",
+        null=True,
+        blank=True,
+    )
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
     )

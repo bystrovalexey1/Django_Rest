@@ -54,6 +54,16 @@ class Payments(models.Model):
     payment_method = models.CharField(
         max_length=15, choices=PAYMENT_METHOD_CHOICES, default="наличные"
     )
+    session_id = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="id сессии"
+    )
+    link = models.URLField(
+        max_length=400, blank=True, null=True, verbose_name="ссылка на оплату"
+    )
+
+    class Meta:
+        verbose_name = "Оплата"
+        verbose_name_plural = "Оплаты"
 
     def __str__(self):
         return f"{self.user} - {self.pay_date}"

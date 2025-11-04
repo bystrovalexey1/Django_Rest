@@ -16,6 +16,18 @@ class Course(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
     )
+    price = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True,
+        verbose_name='Цена курса'
+    )
+    stripe_product_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="ID продукта Stripe"
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -44,6 +56,18 @@ class Lesson(models.Model):
     )
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
+    )
+    price = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True,
+        verbose_name='Цена урока'
+    )
+    stripe_product_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="ID продукта Stripe"
     )
 
     def __str__(self):

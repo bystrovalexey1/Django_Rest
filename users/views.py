@@ -108,7 +108,7 @@ class PaymentsCreateAPIView(CreateAPIView):
                 payment_amount=content.price,
                 session_id=session_id,
                 link=payment_link,
-                payment_method="Перевод на счет",
+                payment_method="card",
             )
 
             serializer = self.serializer_class(payment)

@@ -94,8 +94,8 @@ class PaymentsCreateAPIView(CreateAPIView):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
 
-            session_id, payment_link = create_stripe_session(stripe_price.id)
-            if not session_id or not payment_link:
+            session_id, link = create_stripe_session(stripe_price.id)
+            if not session_id or not link:
                 return Response(
                     {"error": "Ошибка создания сессии оплаты"},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -107,7 +107,7 @@ class PaymentsCreateAPIView(CreateAPIView):
                 pay_course=pay_course,
                 payment_amount=content.price,
                 session_id=session_id,
-                link=payment_link,
+                link=link,
                 payment_method="card",
             )
 

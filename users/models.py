@@ -29,7 +29,12 @@ class Payments(models.Model):
         null=True,
         blank=True,
     )
-    pay_date = models.DateTimeField(auto_now_add=True, verbose_name="дата оплаты")
+    pay_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="дата оплаты",
+        null=True,
+        blank=True,
+    )
     pay_course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -49,10 +54,10 @@ class Payments(models.Model):
     payment_amount = models.IntegerField(verbose_name="сумма оплаты")
     PAYMENT_METHOD_CHOICES = [
         ("наличные", "Наличные"),
-        ("перевод на счет", "Перевод на счет"),
+        ("card", "card"),
     ]
     payment_method = models.CharField(
-        max_length=15, choices=PAYMENT_METHOD_CHOICES, default="наличные"
+        max_length=15, choices=PAYMENT_METHOD_CHOICES, default="card"
     )
     session_id = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="id сессии"

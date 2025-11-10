@@ -29,7 +29,12 @@ class Payments(models.Model):
         null=True,
         blank=True,
     )
-    pay_date = models.DateTimeField(auto_now_add=True, verbose_name="дата оплаты")
+    pay_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="дата оплаты",
+        null=True,
+        blank=True,
+    )
     pay_course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -46,13 +51,41 @@ class Payments(models.Model):
         null=True,
         blank=True,
     )
-    payment_amount = models.IntegerField(verbose_name='сумма оплаты')
+    payment_amount = models.IntegerField(verbose_name="сумма оплаты")
     PAYMENT_METHOD_CHOICES = [
         ("наличные", "Наличные"),
-        ("перевод на счет", "Перевод на счет"),
+        ("card", "card"),
     ]
-    payment_method = models.CharField(max_length=15, choices=PAYMENT_METHOD_CHOICES, default="наличные")
+    payment_method = models.CharField(
+        max_length=15, choices=PAYMENT_METHOD_CHOICES, default="card"
+    )
+    session_id = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="id сессии"
+    )
+    link = models.URLField(
+        max_length=400, blank=True, null=True, verbose_name="ссылка на оплату"
+    )
+
+    class Meta:
+        verbose_name = "Оплата"
+        verbose_name_plural = "Оплаты"
 
     def __str__(self):
-        return f'{self.user} - {self.pay_date}'
+        return f"{self.user} - {self.pay_date}"
 
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+    )
+    courses = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="курс",
+    )
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
